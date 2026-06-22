@@ -411,9 +411,9 @@ export const oauthRoutes = {
         "base64url",
       );
 
-      await db
-        .prepare("DELETE FROM refresh_tokens WHERE token = ?")
-        .run(refreshToken);
+      db.prepare("DELETE FROM refresh_tokens WHERE token = ?").run(
+        refreshToken,
+      );
       db.prepare(
         "INSERT INTO refresh_tokens (token, client_id, expires_at) VALUES (?, ?, ?)",
       ).run(
