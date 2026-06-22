@@ -6,6 +6,7 @@ export async function pve(path: string, init: RequestInit = {}): Promise<any> {
       Authorization: `PVEAPIToken=${process.env.PVE_API_TOKEN}`,
       ...init.headers,
     },
+    signal: AbortSignal.timeout(5000),
     ...(process.env.PVE_INSECURE === "true"
       ? { tls: { rejectUnauthorized: false } }
       : {}),
@@ -13,7 +14,11 @@ export async function pve(path: string, init: RequestInit = {}): Promise<any> {
 
   if (!res.ok) {
     const errorText = await res.text();
-    throw new Error(`Proxmox ${res.status} ${res.statusText}: ${errorText}`);
+    return {
+      ok: false,
+      finished: true,
+      error: `Proxmox ${res.status} ${res.statusText}: ${errorText}`,
+    };
   }
 
   const data = ((await res.json()) as any).data;
