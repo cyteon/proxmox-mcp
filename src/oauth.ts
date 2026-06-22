@@ -1,16 +1,25 @@
 import { jwtVerify, SignJWT } from "jose";
 import { createHash, randomUUID, timingSafeEqual } from "crypto";
+import { Database } from "bun:sqlite";
 
-let codes = new Map<
-  string,
-  {
-    clientId: string;
-    redirectUri: string;
-    codeChallenge: string;
-    resource: string;
-    expiresAt: number;
-  }
->();
+export const db = new Database("oauth.sqlite");
+
+db.run(`
+CREATE TABLE IF NOT EXISTS codes (
+  code TEXT PRIMARY KEY,
+  client_id TEXT NOT NULL,
+  redirect_uri TEXT NOT NULL,
+  code_challenge TEXT NOT NULL,
+  resource TEXT NOT NULL,
+  expires_at INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS refresh_tokens (
+  token TEXT PRIMARY KEY,
+  client_id TEXT NOT NULL,
+  expires_at INTEGER NOT NULL
+);
+`);
 
 let refreshTokens = new Map<
   string,
@@ -252,13 +261,16 @@ export const oauthRoutes = {
         "base64url",
       );
 
-      codes.set(code, {
-        clientId: form.get("client_id"),
-        redirectUri: form.get("redirect_uri"),
-        codeChallenge: form.get("code_challenge"),
-        resource: form.get("resource"),
-        expiresAt: Date.now() + 60 * 60 * 1000, // 1h
-      });
+      db.prepare(
+        "INSERT INTO codes (code, client_id, redirect_uri, code_challenge, resource, expires_at) VALUES (?, ?, ?, ?, ?, ?)",
+      ).run(
+        code,
+        form.get("client_id"),
+        form.get("redirect_uri"),
+        form.get("code_challenge"),
+        form.get("resource"),
+        Date.now() + 60 * 60 * 1000, // 1h
+      );
 
       const url = new URL(form.get("redirect_uri"));
       url.searchParams.set("code", code);
@@ -282,9 +294,20 @@ export const oauthRoutes = {
 
     if (form.get("grant_type") === "authorization_code") {
       const code = form.get("code");
-      const entry = codes.get(code);
+      const entry = db
+        .prepare("SELECT * FROM codes WHERE code = ?")
+        .get(code) as
+        | {
+            code: string;
+            client_id: string;
+            redirect_uri: string;
+            code_challenge: string;
+            resource: string;
+            expires_at: number;
+          }
+        | undefined;
 
-      if (!entry || entry.expiresAt < Date.now()) {
+      if (!entry || entry.expires_at < Date.now()) {
         return Response.json(
           {
             error: "Invalid or expired code",
@@ -295,7 +318,7 @@ export const oauthRoutes = {
         );
       }
 
-      if (entry.redirectUri !== form.get("redirect_uri")) {
+      if (entry.redirect_uri !== form.get("redirect_uri")) {
         return Response.json(
           {
             error: "Invalid grant",
@@ -323,7 +346,7 @@ export const oauthRoutes = {
           .digest(),
       );
 
-      const b = Buffer.from(entry.codeChallenge, "base64url");
+      const b = Buffer.from(entry.code_challenge, "base64url");
 
       if (a.length !== b.length || !timingSafeEqual(a, b)) {
         return Response.json(
@@ -336,18 +359,22 @@ export const oauthRoutes = {
         );
       }
 
-      const token = await createJWT(entry.clientId);
+      const token = await createJWT(entry.client_id);
 
       const refresh = Buffer.from(randomUUID() + randomUUID()).toString(
         "base64url",
       );
 
-      refreshTokens.set(refresh, {
-        clientId: entry.clientId,
-        expiresAt: Date.now() + 30 * 24 * 60 * 60 * 1000, // 30d
-      });
+      db.prepare("DELETE FROM codes WHERE code = ?").run(code);
+      db.prepare(
+        "INSERT INTO refresh_tokens (token, client_id, expires_at) VALUES (?, ?, ?)",
+      ).run(
+        refresh,
+        entry.client_id,
+        Date.now() + 30 * 24 * 60 * 60 * 1000, // 30d
+      );
 
-      console.log(`Issued token for client ${entry.clientId}`);
+      console.log(`Issued token for client ${entry.client_id}`);
 
       return Response.json({
         access_token: token,
@@ -358,9 +385,19 @@ export const oauthRoutes = {
     }
 
     if (form.get("grant_type") === "refresh_token") {
-      const entry = refreshTokens.get(form.get("refresh_token") as string);
+      const refreshToken = form.get("refresh_token") as string;
 
-      if (!entry || entry.expiresAt < Date.now()) {
+      const entry = db
+        .prepare("SELECT * FROM refresh_tokens WHERE token = ?")
+        .get(refreshToken) as
+        | {
+            token: string;
+            client_id: string;
+            expires_at: number;
+          }
+        | undefined;
+
+      if (!entry || entry.expires_at < Date.now()) {
         return Response.json(
           {
             error: "Invalid or expired refresh token",
@@ -371,17 +408,23 @@ export const oauthRoutes = {
         );
       }
 
-      const token = await createJWT(entry.clientId);
+      const token = await createJWT(entry.client_id);
       const refresh = Buffer.from(randomUUID() + randomUUID()).toString(
         "base64url",
       );
 
-      refreshTokens.set(refresh, {
-        clientId: entry.clientId,
-        expiresAt: Date.now() + 30 * 24 * 60 * 60 * 1000, // 30d
-      });
+      await db
+        .prepare("DELETE FROM refresh_tokens WHERE token = ?")
+        .run(refreshToken);
+      db.prepare(
+        "INSERT INTO refresh_tokens (token, client_id, expires_at) VALUES (?, ?, ?)",
+      ).run(
+        refresh,
+        entry.client_id,
+        Date.now() + 30 * 24 * 60 * 60 * 1000, // 30d
+      );
 
-      console.log(`Refreshed token for client ${entry.clientId}`);
+      console.log(`Refreshed token for client ${entry.client_id}`);
 
       return Response.json({
         access_token: token,
