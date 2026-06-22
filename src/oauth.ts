@@ -10,7 +10,6 @@ CREATE TABLE IF NOT EXISTS codes (
   client_id TEXT NOT NULL,
   redirect_uri TEXT NOT NULL,
   code_challenge TEXT NOT NULL,
-  resource TEXT NOT NULL,
   expires_at INTEGER NOT NULL
 );
 
@@ -262,13 +261,12 @@ export const oauthRoutes = {
       );
 
       db.prepare(
-        "INSERT INTO codes (code, client_id, redirect_uri, code_challenge, resource, expires_at) VALUES (?, ?, ?, ?, ?, ?)",
+        "INSERT INTO codes (code, client_id, redirect_uri, code_challenge, expires_at) VALUES (?, ?, ?, ?, ?, ?)",
       ).run(
         code,
         form.get("client_id"),
         form.get("redirect_uri"),
         form.get("code_challenge"),
-        form.get("resource"),
         Date.now() + 60 * 60 * 1000, // 1h
       );
 
