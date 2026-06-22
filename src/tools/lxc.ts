@@ -27,4 +27,58 @@ export async function registerTools(server: McpServer) {
       };
     },
   );
+
+  server.registerTool(
+    "lxc.status",
+    {
+      title: "lxc1.status",
+      description: "Get the status of a LXC container",
+      inputSchema: {
+        node: z.string().describe("Node the container is on"),
+        vmid: z.string().describe("ID of the container"),
+      },
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+      },
+    },
+    async ({ node, vmid }) => {
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(
+              await pve(`nodes/${node}/lxc/${vmid}/status/current`),
+            ),
+          },
+        ],
+      };
+    },
+  );
+
+  server.registerTool(
+    "lxc.config",
+    {
+      title: "lxc.config",
+      description: "Get the config of a LXC container",
+      inputSchema: {
+        node: z.string().describe("Node the container is on"),
+        vmid: z.string().describe("ID of the container"),
+      },
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+      },
+    },
+    async ({ node, vmid }) => {
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(await pve(`nodes/${node}/lxc/${vmid}/config`)),
+          },
+        ],
+      };
+    },
+  );
 }

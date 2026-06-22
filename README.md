@@ -1,6 +1,6 @@
 # proxmox-mcp
 
-A MCP server for Proxmox VE, made with bun and @modelcontextprovider/sdk.
+A MCP server for Proxmox VE, made with bun and @modelcontextprovider/sdk. Uses (static) oauth details for authentication.
 
 ## PVE API2 Coverage
 
@@ -14,33 +14,28 @@ A MCP server for Proxmox VE, made with bun and @modelcontextprovider/sdk.
 - [x] Cluster tasks
 
 ### QEMU
-- [ ] List VMs
-- [ ] Get VM status
-- [ ] Get VM config
-- [ ] Create VM
-- [ ] Start VM
-- [ ] Stop VM
-- [ ] Shutdown VM
+- [x] List VMs
+- [x] Get VM status
+- [x] Get VM config
+- [ ] Power actions
 - [ ] Restart VM
 - [ ] Suspend/resume VM
 - [ ] Migrate VM
 - [ ] Clone VM
 - [ ] Delete VM
+- [ ] List snapshots
+- [ ] Create snapshot
+- [ ] Delete snapshot
+- [ ] Rollback snapshot
 
 ### LXC
-- [ ] List containers
-- [ ] Get container status
-- [ ] Get container config
-- [ ] Create container
-- [ ] Start container
-- [ ] Stop container
-- [ ] Shutdown container
-- [ ] Restart container
+- [x] List containers
+- [x] Get container status
+- [x] Get container config
+- [ ] Power actions
 - [ ] Migrate container
 - [ ] Clone container
 - [ ] Delete container
-
-### Snapshots
 - [ ] List snapshots
 - [ ] Create snapshot
 - [ ] Delete snapshot
