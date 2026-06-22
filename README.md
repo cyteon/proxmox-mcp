@@ -5,7 +5,7 @@ A MCP server for Proxmox VE, made with bun and @modelcontextprovider/sdk.
 ## PVE API2 Coverage
 
 ### Discovery
-- [ ] GET /version
+- [x] GET /version
 - [ ] GET /cluster/resources
 - [ ] GET /cluster/status
 - [ ] GET /cluster/nextid

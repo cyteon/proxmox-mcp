@@ -2,6 +2,9 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
 import { oauthRoutes, requireBearer } from "./oauth";
 
+// tools
+import * as discovery from "./tools/discovery";
+
 console.log(
   `Starting Proxmox MCP Server on :${process.env.PORT ? parseInt(process.env.PORT) : 3000}`,
 );
@@ -18,6 +21,8 @@ Bun.serve({
         name: "proxmox-mcp",
         version: "0.1.0",
       });
+
+      await discovery.registerTools(server);
 
       await server.connect(transport);
       return transport.handleRequest(req);

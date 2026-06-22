@@ -1,4 +1,4 @@
-export async function pve(path: string, init: RequestInit): Promise<any> {
+export async function pve(path: string, init: RequestInit = {}): Promise<any> {
   const res = await fetch(`${process.env.PVE_API_URL}/api2/json/${path}`, {
     ...init,
     headers: {
@@ -19,7 +19,7 @@ export async function pve(path: string, init: RequestInit): Promise<any> {
   const data = ((await res.json()) as any).data;
 
   if (data === undefined) {
-    return { ok: "true", finished: true, data: null };
+    return { ok: true, finished: true, data: null };
   }
 
   if (typeof data === "string" && data.startsWith("UPID:")) {
@@ -27,42 +27,44 @@ export async function pve(path: string, init: RequestInit): Promise<any> {
     return waitForTask(node!, data);
   }
 
-  return { ok: "likely", finished: true, data };
+  return { ok: true, finished: true, data };
 }
 
 export async function waitForTask(node: string, upid: string): Promise<any> {
   let timeout = 10;
 
   while (true) {
-    timeout -= 1;
-
     if (timeout <= 0) {
       return {
-        ok: "unknown",
+        success: true,
         finished: false,
         upid: upid,
         message: "Task still pending after 10 seconds",
       };
     }
 
-    const task = await pve(`nodes/${node}/tasks/${upid}`, {
+    const task = await pve(`nodes/${node}/tasks/${upid}/status`, {
       method: "GET",
     });
 
     if (task.status === "stopped") {
       if (task.exitstatus === "OK") {
         return {
-          ok: "true",
+          success: true,
           finished: true,
           upid: upid,
         };
       } else {
-        throw new Error(
-          `Task ${upid} on node ${node} failed with exit status: ${task.exitstatus}`,
-        );
+        return {
+          success: false,
+          finished: true,
+          upid: upid,
+          message: `Task failed with exit status: ${task.exitstatus}`,
+        };
       }
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    timeout -= 1;
+    await Bun.sleep(1000);
   }
 }
