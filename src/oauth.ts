@@ -261,7 +261,7 @@ export const oauthRoutes = {
       );
 
       db.prepare(
-        "INSERT INTO codes (code, client_id, redirect_uri, code_challenge, expires_at) VALUES (?, ?, ?, ?, ?, ?)",
+        "INSERT INTO codes (code, client_id, redirect_uri, code_challenge, expires_at) VALUES (?, ?, ?, ?, ?)",
       ).run(
         code,
         form.get("client_id"),
