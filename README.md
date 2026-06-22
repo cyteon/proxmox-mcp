@@ -1,15 +1,16 @@
 # proxmox-mcp
 
-To install dependencies:
+A MCP server for Proxmox VE, made with bun and @modelcontextprovider/sdk.
 
-```bash
-bun install
-```
+## PVE API2 Coverage
 
-To run:
+### Discovery
+- [ ] GET /version
+- [ ] GET /cluster/resources
+- [ ] GET /cluster/status
+- [ ] GET /cluster/nextid
+- [ ] GET /nodes
+- [ ] GET /cluster/log
+- [ ] GET /cluster/tasks
 
-```bash
-bun run index.ts
-```
-
-This project was created using `bun init` in bun v1.3.14. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+todo: finish coverage list
