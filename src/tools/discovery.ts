@@ -26,9 +26,9 @@ export async function registerTools(server: McpServer) {
   );
 
   server.registerTool(
-    "cluster.resources",
+    "clusterResources",
     {
-      title: "cluster.resources",
+      title: "clusterResources",
       description: "Resources index (cluster wide)",
       annotations: {
         readOnlyHint: true,
@@ -48,9 +48,9 @@ export async function registerTools(server: McpServer) {
   );
 
   server.registerTool(
-    "cluster.status",
+    "clusterStatus",
     {
-      title: "cluster.status",
+      title: "clusterStatus",
       description: "Get cluster status information",
       annotations: {
         readOnlyHint: true,
@@ -70,9 +70,9 @@ export async function registerTools(server: McpServer) {
   );
 
   server.registerTool(
-    "cluster.nextid",
+    "clusterNextid",
     {
-      title: "cluster.nextid",
+      title: "clusterNextid",
       description:
         "Get next free VMID. Pass a VMID to assert that its free (at time of check).",
       inputSchema: {
@@ -120,9 +120,9 @@ export async function registerTools(server: McpServer) {
   );
 
   server.registerTool(
-    "cluster.log",
+    "clusterLog",
     {
-      title: "cluster.log",
+      title: "clusterLog",
       description: "Get cluster log entries",
       inputSchema: {
         max: z.number().optional(),
@@ -147,9 +147,9 @@ export async function registerTools(server: McpServer) {
   );
 
   server.registerTool(
-    "cluster.tasks",
+    "clusterTasks",
     {
-      title: "cluste.tasks",
+      title: "clusteTasks",
       description: "Get cluster tasks",
       annotations: {
         readOnlyHint: true,

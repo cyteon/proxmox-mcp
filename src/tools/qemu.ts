@@ -4,9 +4,9 @@ import { z } from "zod/v4";
 
 export async function registerTools(server: McpServer) {
   server.registerTool(
-    "qemu.list",
+    "qemuList",
     {
-      title: "qemu.list",
+      title: "qemuList",
       description: "List all QEMU virtual machines",
       inputSchema: {
         node: z.string().describe("Node to list VMs on"),
@@ -29,9 +29,9 @@ export async function registerTools(server: McpServer) {
   );
 
   server.registerTool(
-    "qemu.status",
+    "qemuStatus",
     {
-      title: "qemu.status",
+      title: "qemuStatus",
       description: "Get the status of a VM",
       inputSchema: {
         node: z.string().describe("Node the VM is on"),
@@ -57,9 +57,9 @@ export async function registerTools(server: McpServer) {
   );
 
   server.registerTool(
-    "qemu.config",
+    "qemuConfig",
     {
-      title: "qemu.config",
+      title: "qemuConfig",
       description: "Get the configuration of a VM",
       inputSchema: {
         node: z.string().describe("Node the VM is on"),

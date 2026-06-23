@@ -18,7 +18,6 @@ A MCP server for Proxmox VE, made with bun and @modelcontextprovider/sdk. Uses (
 - [x] Get VM status
 - [x] Get VM config
 - [ ] Power actions
-- [ ] Restart VM
 - [ ] Suspend/resume VM
 - [ ] Migrate VM
 - [ ] Clone VM
@@ -40,5 +39,14 @@ A MCP server for Proxmox VE, made with bun and @modelcontextprovider/sdk. Uses (
 - [ ] Create snapshot
 - [ ] Delete snapshot
 - [ ] Rollback snapshot
+
+### Storage
+These are on a node level
+
+- [x] List datastores
+- [x] Get storage status
+- [x] Get storage content
+- [ ] Get backup prune info
+- [ ] Prune backups
 
 todo: finish coverage list

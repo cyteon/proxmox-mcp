@@ -6,6 +6,7 @@ import { oauthRoutes, requireBearer } from "./oauth";
 import * as discovery from "./tools/discovery";
 import * as qemu from "./tools/qemu";
 import * as lxc from "./tools/lxc";
+import * as storage from "./tools/storage";
 
 console.log(
   `Starting Proxmox MCP Server on :${process.env.PORT ? parseInt(process.env.PORT) : 3000}`,
@@ -27,6 +28,7 @@ Bun.serve({
       await discovery.registerTools(server);
       await qemu.registerTools(server);
       await lxc.registerTools(server);
+      await storage.registerTools(server);
 
       await server.connect(transport);
       return transport.handleRequest(req);
