@@ -17,7 +17,7 @@ A MCP server for Proxmox VE, made with bun and @modelcontextprovider/sdk. Uses (
 - [x] List VMs
 - [x] Get VM status
 - [x] Get VM config
-- [ ] Power actions
+- [ ] Power actions (start, stop, reset, reboot, shutdown)
 - [ ] Suspend/resume VM
 - [ ] Migrate VM
 - [ ] Clone VM
@@ -31,7 +31,7 @@ A MCP server for Proxmox VE, made with bun and @modelcontextprovider/sdk. Uses (
 - [x] List containers
 - [x] Get container status
 - [x] Get container config
-- [ ] Power actions
+- [ ] Power actions (start, stop, reboot, shutdown)
 - [ ] Migrate container
 - [ ] Clone container
 - [ ] Delete container
@@ -41,7 +41,6 @@ A MCP server for Proxmox VE, made with bun and @modelcontextprovider/sdk. Uses (
 - [ ] Rollback snapshot
 
 ### Storage
-These are on a node level
 
 - [x] List datastores
 - [x] Get storage status

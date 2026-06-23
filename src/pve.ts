@@ -10,9 +10,12 @@ export async function pve(path: string, init: RequestInit = {}): Promise<any> {
     ...(process.env.PVE_INSECURE === "true"
       ? { tls: { rejectUnauthorized: false } }
       : {}),
+    ...(init.method === "POST" && init.body == null ? { body: "{}" } : {}),
   });
 
   if (!res.ok) {
+    console.log(`Proxmox API request failed: ${res.status} ${res.statusText}`);
+
     const errorText = await res.text();
     return {
       ok: false,
@@ -48,9 +51,11 @@ export async function waitForTask(node: string, upid: string): Promise<any> {
       };
     }
 
-    const task = await pve(`nodes/${node}/tasks/${upid}/status`, {
-      method: "GET",
-    });
+    const task = (
+      await pve(`nodes/${node}/tasks/${upid}/status`, {
+        method: "GET",
+      })
+    ).data;
 
     if (task.status === "stopped") {
       if (task.exitstatus === "OK") {

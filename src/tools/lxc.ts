@@ -81,4 +81,37 @@ export async function registerTools(server: McpServer) {
       };
     },
   );
+
+  server.registerTool(
+    "lxcPowerAction",
+    {
+      title: "lxcPowerAction",
+      description: "Perform a power action on a LXC container",
+      inputSchema: {
+        node: z.string().describe("Node the container is on"),
+        vmid: z.string().describe("ID of the container"),
+        action: z
+          .enum(["start", "stop", "shutdown", "reboot"])
+          .describe("Power action"),
+      },
+      annotations: {
+        readOnlyHint: false,
+        destructiveHint: true,
+      },
+    },
+    async ({ node, vmid, action }) => {
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(
+              await pve(`nodes/${node}/lxc/${vmid}/status/${action}`, {
+                method: "POST",
+              }),
+            ),
+          },
+        ],
+      };
+    },
+  );
 }
