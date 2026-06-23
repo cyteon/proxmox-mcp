@@ -6,7 +6,6 @@ export async function registerTools(server: McpServer) {
   server.registerTool(
     "nodeStatus",
     {
-      title: "nodeStatus",
       description: "Get node status",
       inputSchema: {
         node: z.string().describe("Node to get status for"),
@@ -31,7 +30,6 @@ export async function registerTools(server: McpServer) {
   server.registerTool(
     "nodeListAvailableUpdates",
     {
-      title: "nodeListAvailableUpdates",
       description: "List available APT updates",
       inputSchema: {
         node: z.string().describe("Node to list available updates for"),

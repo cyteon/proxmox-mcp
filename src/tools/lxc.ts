@@ -4,10 +4,9 @@ import { z } from "zod/v4";
 
 export async function registerTools(server: McpServer) {
   server.registerTool(
-    "lxcList",
+    "listContainers",
     {
-      title: "lxcList",
-      description: "List all LXC virtual machines",
+      description: "List all LXC containers",
       inputSchema: {
         node: z.string().describe("Node to list containers on"),
       },
@@ -31,7 +30,6 @@ export async function registerTools(server: McpServer) {
   server.registerTool(
     "lxcStatus",
     {
-      title: "lxcStatus",
       description: "Get the status of a LXC container",
       inputSchema: {
         node: z.string().describe("Node the container is on"),
@@ -59,7 +57,6 @@ export async function registerTools(server: McpServer) {
   server.registerTool(
     "lxcConfig",
     {
-      title: "lxcConfig",
       description: "Get the config of a LXC container",
       inputSchema: {
         node: z.string().describe("Node the container is on"),
@@ -85,7 +82,6 @@ export async function registerTools(server: McpServer) {
   server.registerTool(
     "lxcPowerAction",
     {
-      title: "lxcPowerAction",
       description: "Perform a power action on a LXC container",
       inputSchema: {
         node: z.string().describe("Node the container is on"),

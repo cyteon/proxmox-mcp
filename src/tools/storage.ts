@@ -4,9 +4,8 @@ import { z } from "zod/v4";
 
 export async function registerTools(server: McpServer) {
   server.registerTool(
-    "storageList",
+    "listStorage",
     {
-      title: "storageList",
       description: "List all storage pools",
       inputSchema: {
         node: z.string().describe("Node to list storage pools on"),
@@ -31,7 +30,6 @@ export async function registerTools(server: McpServer) {
   server.registerTool(
     "storageStatus",
     {
-      title: "storageStatus",
       description: "Get the status of a storage pool",
       inputSchema: {
         node: z.string().describe("Node the storage pool is on"),
@@ -59,7 +57,6 @@ export async function registerTools(server: McpServer) {
   server.registerTool(
     "storageContent",
     {
-      title: "storageContent",
       description: "Get the content of a storage pool",
       inputSchema: {
         node: z.string().describe("Node the storage pool is on"),
@@ -85,9 +82,8 @@ export async function registerTools(server: McpServer) {
   );
 
   server.registerTool(
-    "storageGetPruneInfo",
+    "storagePruneInfo",
     {
-      title: "storageGetPruneInfo",
       description: "Get prune information for backups.",
       inputSchema: {
         node: z.string().describe("Node the storage pool is on"),

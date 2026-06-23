@@ -6,7 +6,6 @@ export async function registerTools(server: McpServer) {
   server.registerTool(
     "getTaskStatus",
     {
-      title: "getTaskStatus",
       description: "Get the status of a task",
       inputSchema: {
         node: z.string().describe("Node the task is on"),
@@ -34,7 +33,6 @@ export async function registerTools(server: McpServer) {
   server.registerTool(
     "getTaskLog",
     {
-      title: "getTaskLog",
       description: "Get the log for a task",
       inputSchema: {
         node: z.string().describe("Node the task is on"),
@@ -60,7 +58,6 @@ export async function registerTools(server: McpServer) {
   server.registerTool(
     "stopTask",
     {
-      title: "stopTask",
       description: "Stop a running task",
       inputSchema: {
         node: z.string().describe("Node the task is on"),
