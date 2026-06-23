@@ -52,4 +52,9 @@ A MCP server for Proxmox VE, made with bun and @modelcontextprotocol/sdk. Uses (
 - [ ] Reboot/shutdown node
 - [x] List APT updates
 
+### Tasks
+- [x] Get task status
+- [x] Get task log
+- [x] Stop task
+
 todo: finish coverage list
