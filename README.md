@@ -46,7 +46,12 @@ These are on a node level
 - [x] List datastores
 - [x] Get storage status
 - [x] Get storage content
-- [ ] Get backup prune info
+- [x] Get backup prune info
 - [ ] Prune backups
+
+### Nodes
+- [x] Get node status
+- [ ] Reboot/shutdown node
+- [x] List APT updates
 
 todo: finish coverage list
