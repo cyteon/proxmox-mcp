@@ -57,6 +57,34 @@ export async function registerTools(server: McpServer) {
   );
 
   server.registerTool(
+    "storageContent",
+    {
+      title: "storageContent",
+      description: "Get the content of a storage pool",
+      inputSchema: {
+        node: z.string().describe("Node the storage pool is on"),
+        storageId: z.string().describe("ID of the storage pool"),
+      },
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+      },
+    },
+    async ({ node, storageId }) => {
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(
+              await pve(`nodes/${node}/storage/${storageId}/content`),
+            ),
+          },
+        ],
+      };
+    },
+  );
+
+  server.registerTool(
     "storageGetPruneInfo",
     {
       title: "storageGetPruneInfo",

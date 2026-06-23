@@ -1,6 +1,6 @@
 # proxmox-mcp
 
-A MCP server for Proxmox VE, made with bun and @modelcontextprovider/sdk. Uses (static) oauth details for authentication.
+A MCP server for Proxmox VE, made with bun and @modelcontextprotocol/sdk. Uses (static) oauth details for authentication.
 
 ## PVE API2 Coverage
 
@@ -17,8 +17,7 @@ A MCP server for Proxmox VE, made with bun and @modelcontextprovider/sdk. Uses (
 - [x] List VMs
 - [x] Get VM status
 - [x] Get VM config
-- [ ] Power actions (start, stop, reset, reboot, shutdown)
-- [ ] Suspend/resume VM
+- [x] Power actions (start, stop, reset, reboot, shutdown, suspend, resume)
 - [ ] Migrate VM
 - [ ] Clone VM
 - [ ] Delete VM
@@ -31,7 +30,7 @@ A MCP server for Proxmox VE, made with bun and @modelcontextprovider/sdk. Uses (
 - [x] List containers
 - [x] Get container status
 - [x] Get container config
-- [ ] Power actions (start, stop, reboot, shutdown)
+- [x] Power actions (start, stop, reboot, shutdown, suspend, resume)
 - [ ] Migrate container
 - [ ] Clone container
 - [ ] Delete container

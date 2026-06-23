@@ -91,7 +91,7 @@ export async function registerTools(server: McpServer) {
         node: z.string().describe("Node the container is on"),
         vmid: z.string().describe("ID of the container"),
         action: z
-          .enum(["start", "stop", "shutdown", "reboot"])
+          .enum(["start", "stop", "shutdown", "reboot", "suspend", "resume"])
           .describe("Power action"),
       },
       annotations: {
