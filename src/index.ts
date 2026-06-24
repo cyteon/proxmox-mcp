@@ -41,18 +41,6 @@ if (
   process.exit(1);
 }
 
-const server = new McpServer({
-  name: "proxmox-mcp",
-  version: "0.1.0",
-});
-
-await discovery.registerTools(server);
-await qemu.registerTools(server);
-await lxc.registerTools(server);
-await storage.registerTools(server);
-await nodes.registerTools(server);
-await tasks.registerTools(server);
-
 Bun.serve({
   port: process.env.PORT ? parseInt(process.env.PORT) : 3000,
   routes: {
@@ -60,6 +48,18 @@ Bun.serve({
       const transport = new WebStandardStreamableHTTPServerTransport({
         enableJsonResponse: true,
       });
+
+      const server = new McpServer({
+        name: "proxmox-mcp",
+        version: "0.1.0",
+      });
+
+      await discovery.registerTools(server);
+      await qemu.registerTools(server);
+      await lxc.registerTools(server);
+      await storage.registerTools(server);
+      await nodes.registerTools(server);
+      await tasks.registerTools(server);
 
       await server.connect(transport);
       return transport.handleRequest(req);
