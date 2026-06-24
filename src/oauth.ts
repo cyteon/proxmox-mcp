@@ -20,14 +20,6 @@ CREATE TABLE IF NOT EXISTS refresh_tokens (
 );
 `);
 
-let refreshTokens = new Map<
-  string,
-  {
-    clientId: string;
-    expiresAt: number;
-  }
->();
-
 export async function requireBearer(
   handler: (req: Request) => Promise<Response>,
 ) {
@@ -231,7 +223,7 @@ export const oauthRoutes = {
     if (req.method === "POST") {
       const form = await req.formData();
 
-      if (form.get("client_id") !== process.env.OAUTH_ID) {
+      if (form.get("client_id") !== process.env.OAUTH_CLIENT_ID) {
         return Response.json(
           {
             error: "Unauthorized",
@@ -242,10 +234,31 @@ export const oauthRoutes = {
         );
       }
 
-      if (
-        form.get("username") !== process.env.MCP_USERNAME ||
-        form.get("password") !== process.env.MCP_PASSWORD
-      ) {
+      if (!form.get("username") || !form.get("password")) {
+        return Response.json(
+          {
+            error: "Missing username or password",
+          },
+          {
+            status: 400,
+          },
+        );
+      }
+
+      const username = Buffer.from(form.get("username") as string);
+      const password = Buffer.from(form.get("password") as string);
+
+      const expectedUsername = Buffer.from(process.env.MCP_USERNAME!);
+      const expectedPassword = Buffer.from(process.env.MCP_PASSWORD!);
+
+      const usernameMatch =
+        username.length === expectedUsername.length &&
+        timingSafeEqual(username, expectedUsername);
+      const passwordMatch =
+        password.length === expectedPassword.length &&
+        timingSafeEqual(password, expectedPassword);
+
+      if (!usernameMatch || !passwordMatch) {
         return Response.json(
           {
             error: "Unauthorized",
@@ -267,7 +280,7 @@ export const oauthRoutes = {
         form.get("client_id"),
         form.get("redirect_uri"),
         form.get("code_challenge"),
-        Date.now() + 60 * 60 * 1000, // 1h
+        Date.now() + 60 * 1000, // 1m
       );
 
       const url = new URL(form.get("redirect_uri"));
@@ -289,6 +302,56 @@ export const oauthRoutes = {
 
   "/token": async (req) => {
     const form = await req.formData();
+
+    let id = form.get("client_id") as string;
+    let secret = form.get("client_secret") as string;
+
+    if (id === null || secret === null) {
+      const authHeader = req.headers.get("authorization") ?? "";
+
+      if (authHeader.startsWith("Basic ")) {
+        const data = authHeader.slice("Basic ".length);
+        const decoded = Buffer.from(data, "base64").toString("utf-8");
+
+        [id, secret] = decoded.split(":");
+      }
+    }
+
+    if (!id || !secret) {
+      return Response.json(
+        {
+          error: "Missing oauth client details",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
+    if (id !== process.env.OAUTH_CLIENT_ID) {
+      return Response.json(
+        {
+          error: "Unauthorized",
+        },
+        {
+          status: 401,
+        },
+      );
+    }
+
+    const a = Buffer.from(secret);
+    const b = Buffer.from(process.env.OAUTH_CLIENT_SECRET!);
+
+    if (a.length !== b.length || !timingSafeEqual(a, b)) {
+      return Response.json(
+        {
+          error: "Unauthorized",
+        },
+        {
+          status: 401,
+        },
+      );
+    }
 
     if (form.get("grant_type") === "authorization_code") {
       const code = form.get("code");

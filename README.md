@@ -2,6 +2,40 @@
 
 A MCP server for Proxmox VE, made with bun and @modelcontextprotocol/sdk. Uses (static) oauth details for authentication.
 
+## Setup
+1. Clone the repository
+2. Install dependencies with `bun install`
+3. Copy `.env.example` to `.env` and fill in all values
+4. Run the server with `bun .`
+5. Add http://localhost:3000/mcp (replace base url if applicable) to the AI of your choice (example configurations below), along with the oauth client id and secret.
+6. The AI should now be able to make requests to the MCP server.
+
+### Example: Opencode
+Add the mcp to your opencode config, and run `opencode mcp auth proxmox-mcp` to log in. \
+Example opencode config:
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "proxmox-mcp": {
+      "type": "remote",
+      "url": "http://localhost:3000/mcp",
+      "enabled": true,
+      "oauth": {
+        "clientId": "CHANGE_ME",
+        "clientSecret": "CHANGE_ME"
+      }
+    }
+  }
+}
+```
+
+### Example: Claude (web)
+1. Navigate to https://claude.ai/customize/connectors?modal=add-custom-connector
+2. Set a name for the connector and paste the mcp url (base url + /mcp)
+3. Expand advanced options and enter the oauth client id and client secret
+
 ## Features
 
 ### Discovery
