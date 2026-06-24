@@ -2,13 +2,13 @@
 
 A MCP server for Proxmox VE, made with bun and @modelcontextprotocol/sdk. Uses (static) oauth details for authentication.
 
-## PVE API2 Coverage
+## Features
 
 ### Discovery
 - [x] Cluster version
 - [x] Cluster resources
 - [x] Cluster status
-- [x] Next/free cluster vmids
+- [x] Next/free cluster vmid
 - [x] List nodes
 - [x] Cluster log
 - [x] Cluster tasks
@@ -17,6 +17,7 @@ A MCP server for Proxmox VE, made with bun and @modelcontextprotocol/sdk. Uses (
 - [x] List VMs
 - [x] Get VM status
 - [x] Get VM config
+- [x] Update VM config
 - [x] Power actions (start, stop, reset, reboot, shutdown, suspend, resume)
 - [ ] Migrate VM
 - [ ] Clone VM
@@ -30,6 +31,7 @@ A MCP server for Proxmox VE, made with bun and @modelcontextprotocol/sdk. Uses (
 - [x] List containers
 - [x] Get container status
 - [x] Get container config
+- [x] Update container config
 - [x] Power actions (start, stop, reboot, shutdown, suspend, resume)
 - [ ] Migrate container
 - [ ] Clone container
@@ -57,4 +59,4 @@ A MCP server for Proxmox VE, made with bun and @modelcontextprotocol/sdk. Uses (
 - [x] Get task log
 - [x] Stop task
 
-todo: finish coverage list
+todo: finish list
