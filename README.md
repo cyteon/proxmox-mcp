@@ -85,7 +85,7 @@ Example opencode config:
 
 ### Nodes
 - [x] Get node status
-- [ ] Reboot/shutdown node
+- [x] Reboot node
 - [x] List APT updates
 
 ### Tasks

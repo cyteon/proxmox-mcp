@@ -50,4 +50,33 @@ export async function registerTools(server: McpServer) {
       };
     },
   );
+
+  server.registerTool(
+    "rebootNode",
+    {
+      description: "Reboot a node",
+      inputSchema: {
+        node: z.string().describe("Node to reboot"),
+      },
+      annotations: {
+        readOnlyHint: false,
+        destructiveHint: true,
+      },
+    },
+    async ({ node }) => {
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(
+              await pve(`nodes/${node}/status`, {
+                method: "POST",
+                body: JSON.stringify({ command: "reboot" }),
+              }),
+            ),
+          },
+        ],
+      };
+    },
+  );
 }
