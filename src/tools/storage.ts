@@ -113,4 +113,153 @@ export async function registerTools(server: McpServer) {
       };
     },
   );
+
+  server.registerTool(
+    "listDisks",
+    {
+      description: "List all disks on a node",
+      inputSchema: {
+        node: z.string().describe("Node to list disks on"),
+      },
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+      },
+    },
+    async ({ node }) => {
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(await pve(`nodes/${node}/disks/list`)),
+          },
+        ],
+      };
+    },
+  );
+
+  server.registerTool(
+    "getDiskSMART",
+    {
+      description: "Get SMART information for a disk",
+      inputSchema: {
+        node: z.string().describe("Node the disk is on"),
+        disk: z.string().describe("Block device name"),
+      },
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+      },
+    },
+    async ({ node, disk }) => {
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(
+              await pve(
+                `nodes/${node}/disks/smart?disk=${encodeURIComponent(disk)}`,
+              ),
+            ),
+          },
+        ],
+      };
+    },
+  );
+
+  server.registerTool(
+    "listDirStorages",
+    {
+      description: "PVE Managed Directory storages",
+      inputSchema: {
+        node: z.string().describe("Node to list directory storages on"),
+      },
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+      },
+    },
+    async ({ node }) => {
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(await pve(`nodes/${node}/disks/directory`)),
+          },
+        ],
+      };
+    },
+  );
+
+  server.registerTool(
+    "listLVMVolumes",
+    {
+      description: "List LVM Volume Groups",
+      inputSchema: {
+        node: z.string().describe("Node to list LVM volumes on"),
+      },
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+      },
+    },
+    async ({ node }) => {
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(await pve(`nodes/${node}/disks/lvm`)),
+          },
+        ],
+      };
+    },
+  );
+
+  server.registerTool(
+    "listLVMThinVolumes",
+    {
+      description: "List LVM Thin Pools",
+      inputSchema: {
+        node: z.string().describe("Node to list LVM thin pools on"),
+      },
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+      },
+    },
+    async ({ node }) => {
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(await pve(`nodes/${node}/disks/lvmthin`)),
+          },
+        ],
+      };
+    },
+  );
+
+  server.registerTool(
+    "listZFSVolumes",
+    {
+      description: "List ZFS Pools",
+      inputSchema: {
+        node: z.string().describe("Node to list ZFS pools on"),
+      },
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+      },
+    },
+    async ({ node }) => {
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(await pve(`nodes/${node}/disks/zfs`)),
+          },
+        ],
+      };
+    },
+  );
 }

@@ -56,9 +56,11 @@ Example opencode config:
 - [x] Power actions (start, stop, reset, reboot, shutdown, suspend, resume)
 - [ ] Migrate VM
 - [ ] Clone VM
+- [ ] Delete VM
 - [ ] List snapshots
 - [ ] Create snapshot
 - [ ] Rollback snapshot
+- [ ] Delete snapshot
 
 Guest agent:
 - [x] Command execution
@@ -74,9 +76,11 @@ Guest agent:
 - [x] Power actions (start, stop, reboot, shutdown, suspend, resume)
 - [ ] Migrate container
 - [ ] Clone container
+- [ ] Delete container
 - [ ] List snapshots
 - [ ] Create snapshot
 - [ ] Rollback snapshot
+- [ ] Delete snapshot
 
 ### Storage
 
@@ -84,6 +88,12 @@ Guest agent:
 - [x] Get storage status
 - [x] Get storage content
 - [x] Get backup prune info
+- [x] List disks
+- [x] Get disk smart health
+- [x] List directories
+- [x] List lvm volumes
+- [x] List lvmthin volumes
+- [x] List zfs pools
 
 ### Nodes
 - [x] Get node status
