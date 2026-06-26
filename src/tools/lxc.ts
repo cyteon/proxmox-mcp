@@ -211,4 +211,36 @@ export async function registerTools(server: McpServer) {
       };
     },
   );
+
+  server.registerTool(
+    "lxcRRDData",
+    {
+      description: "Get RRD data for a LXC container",
+      inputSchema: {
+        node: z.string().describe("Node the container is on"),
+        vmid: z.number().describe("ID of the container"),
+        timeframe: z
+          .enum(["hour", "day", "week", "month", "year"])
+          .describe("Timeframe for the RRD data"),
+      },
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+      },
+    },
+    async ({ node, vmid, timeframe }) => {
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(
+              await pve(
+                `nodes/${node}/lxc/${vmid}/rrddata?timeframe=${timeframe}`,
+              ),
+            ),
+          },
+        ],
+      };
+    },
+  );
 }

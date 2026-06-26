@@ -52,6 +52,7 @@ Example opencode config:
 - [x] Get VM status
 - [x] Get VM config
 - [x] Update VM config
+- [x] Get RRD data
 - [x] Power actions (start, stop, reset, reboot, shutdown, suspend, resume)
 - [ ] Migrate VM
 - [ ] Clone VM
@@ -69,6 +70,7 @@ Guest agent:
 - [x] Get container status
 - [x] Get container config
 - [x] Update container config
+- [x] Get RRD data
 - [x] Power actions (start, stop, reboot, shutdown, suspend, resume)
 - [ ] Migrate container
 - [ ] Clone container
@@ -87,6 +89,7 @@ Guest agent:
 - [x] Get node status
 - [x] Reboot node
 - [x] List APT updates
+- [x] Get RRD data
 
 ### Tasks
 - [x] Get task status

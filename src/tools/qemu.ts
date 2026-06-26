@@ -257,6 +257,38 @@ export async function registerTools(server: McpServer) {
   );
 
   server.registerTool(
+    "qemuRRDData",
+    {
+      description: "Get RRD data for a VM",
+      inputSchema: {
+        node: z.string().describe("Node the VM is on"),
+        vmid: z.number().describe("ID of the VM"),
+        timeframe: z
+          .enum(["hour", "day", "week", "month", "year"])
+          .describe("Timeframe to get RRD data for"),
+      },
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+      },
+    },
+    async ({ node, vmid, timeframe }) => {
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(
+              await pve(
+                `nodes/${node}/qemu/${vmid}/rrddata?timeframe=${timeframe}`,
+              ),
+            ),
+          },
+        ],
+      };
+    },
+  );
+
+  server.registerTool(
     "qemuAgentExec",
     {
       description: "Execute a command in a VM",

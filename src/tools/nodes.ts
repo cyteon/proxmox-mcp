@@ -79,4 +79,33 @@ export async function registerTools(server: McpServer) {
       };
     },
   );
+
+  server.registerTool(
+    "nodeRRDData",
+    {
+      description: "Read node RRD statistics",
+      inputSchema: {
+        node: z.string().describe("Node to get RRD data for"),
+        timeframe: z
+          .enum(["hour", "day", "week", "month", "year", "decade"])
+          .describe("Timeframe for RRD data"),
+      },
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+      },
+    },
+    async ({ node, timeframe }) => {
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(
+              await pve(`nodes/${node}/rrddata?timeframe=${timeframe}`),
+            ),
+          },
+        ],
+      };
+    },
+  );
 }
