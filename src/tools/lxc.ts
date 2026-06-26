@@ -6,7 +6,7 @@ export async function registerTools(server: McpServer) {
   server.registerTool(
     "listContainers",
     {
-      description: "List all LXC containers",
+      description: "List LXC containers",
       inputSchema: {
         node: z.string().describe("Node to list containers on"),
       },
@@ -30,10 +30,10 @@ export async function registerTools(server: McpServer) {
   server.registerTool(
     "lxcStatus",
     {
-      description: "Get the status of a LXC container",
+      description: "Get container status",
       inputSchema: {
-        node: z.string().describe("Node the container is on"),
-        vmid: z.number().describe("ID of the container"),
+        node: z.string(),
+        vmid: z.number(),
       },
       annotations: {
         readOnlyHint: true,
@@ -57,10 +57,10 @@ export async function registerTools(server: McpServer) {
   server.registerTool(
     "lxcConfig",
     {
-      description: "Get the config of a LXC container",
+      description: "Get container configuration",
       inputSchema: {
-        node: z.string().describe("Node the container is on"),
-        vmid: z.number().describe("ID of the container"),
+        node: z.string(),
+        vmid: z.number(),
       },
       annotations: {
         readOnlyHint: true,
@@ -82,13 +82,18 @@ export async function registerTools(server: McpServer) {
   server.registerTool(
     "lxcPowerAction",
     {
-      description: "Perform a power action on a LXC container",
+      description: "Start/stop/reboot/suspend/resume a container",
       inputSchema: {
-        node: z.string().describe("Node the container is on"),
-        vmid: z.number().describe("ID of the container"),
-        action: z
-          .enum(["start", "stop", "shutdown", "reboot", "suspend", "resume"])
-          .describe("Power action"),
+        node: z.string(),
+        vmid: z.number(),
+        action: z.enum([
+          "start",
+          "stop",
+          "shutdown",
+          "reboot",
+          "suspend",
+          "resume",
+        ]),
       },
       annotations: {
         readOnlyHint: false,
@@ -114,10 +119,10 @@ export async function registerTools(server: McpServer) {
   server.registerTool(
     "lxcUpdateConfig",
     {
-      description: "Update the config of a LXC container",
+      description: "Set container options",
       inputSchema: {
-        node: z.string().describe("Node the container is on"),
-        vmid: z.number().describe("ID of the container"),
+        node: z.string(),
+        vmid: z.number(),
         config: z
           .object({
             arch: z
@@ -215,13 +220,11 @@ export async function registerTools(server: McpServer) {
   server.registerTool(
     "lxcRRDData",
     {
-      description: "Get RRD data for a LXC container",
+      description: "Read container RRD statistics",
       inputSchema: {
-        node: z.string().describe("Node the container is on"),
-        vmid: z.number().describe("ID of the container"),
-        timeframe: z
-          .enum(["hour", "day", "week", "month", "year"])
-          .describe("Timeframe for the RRD data"),
+        node: z.string(),
+        vmid: z.number(),
+        timeframe: z.enum(["hour", "day", "week", "month", "year"]),
       },
       annotations: {
         readOnlyHint: true,

@@ -117,7 +117,7 @@ export async function registerTools(server: McpServer) {
   server.registerTool(
     "clusterLog",
     {
-      description: "Get cluster log entries",
+      description: "Read cluster log",
       inputSchema: {
         max: z.number().optional(),
       },
@@ -143,7 +143,7 @@ export async function registerTools(server: McpServer) {
   server.registerTool(
     "clusterTasks",
     {
-      description: "Get cluster tasks",
+      description: "List recent tasks (cluster wide)",
       annotations: {
         readOnlyHint: true,
         destructiveHint: false,
