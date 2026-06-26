@@ -55,11 +55,14 @@ Example opencode config:
 - [x] Power actions (start, stop, reset, reboot, shutdown, suspend, resume)
 - [ ] Migrate VM
 - [ ] Clone VM
-- [ ] Delete VM
 - [ ] List snapshots
 - [ ] Create snapshot
-- [ ] Delete snapshot
 - [ ] Rollback snapshot
+
+Guest agent:
+- [x] Command execution
+- [x] Get network interfaces
+- [x] Get OS info
 
 ### LXC
 - [x] List containers
@@ -69,10 +72,8 @@ Example opencode config:
 - [x] Power actions (start, stop, reboot, shutdown, suspend, resume)
 - [ ] Migrate container
 - [ ] Clone container
-- [ ] Delete container
 - [ ] List snapshots
 - [ ] Create snapshot
-- [ ] Delete snapshot
 - [ ] Rollback snapshot
 
 ### Storage
@@ -81,7 +82,6 @@ Example opencode config:
 - [x] Get storage status
 - [x] Get storage content
 - [x] Get backup prune info
-- [ ] Prune backups
 
 ### Nodes
 - [x] Get node status

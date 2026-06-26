@@ -255,4 +255,129 @@ export async function registerTools(server: McpServer) {
       };
     },
   );
+
+  server.registerTool(
+    "qemuAgentExec",
+    {
+      description: "Execute a command in a VM",
+      inputSchema: {
+        node: z.string().describe("Node the VM is on"),
+        vmid: z.number().describe("ID of the VM"),
+        command: z.string().describe("Command to execute"),
+      },
+      annotations: {
+        readOnlyHint: false,
+        destructiveHint: true,
+      },
+    },
+    async ({ node, vmid, command }) => {
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(
+              await pve(`nodes/${node}/qemu/${vmid}/agent/exec`, {
+                method: "POST",
+                body: JSON.stringify({ command }),
+              }),
+            ),
+          },
+        ],
+      };
+    },
+  );
+
+  server.registerTool(
+    "qemuAgentExecStatus",
+    {
+      description: "Get the status of a command executed in a VM",
+      inputSchema: {
+        node: z.string().describe("Node the VM is on"),
+        vmid: z.number().describe("ID of the VM"),
+        pid: z.number().describe("PID of the command"),
+      },
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+      },
+    },
+    async ({ node, vmid, pid }) => {
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(
+              await pve(
+                `nodes/${node}/qemu/${vmid}/agent/exec-status?pid=${pid}`,
+                {
+                  method: "GET",
+                },
+              ),
+            ),
+          },
+        ],
+      };
+    },
+  );
+
+  server.registerTool(
+    "qemuAgentGetInterfaces",
+    {
+      description: "Get the network interfaces of a VM",
+      inputSchema: {
+        node: z.string().describe("Node the VM is on"),
+        vmid: z.number().describe("ID of the VM"),
+      },
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+      },
+    },
+    async ({ node, vmid }) => {
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(
+              await pve(
+                `nodes/${node}/qemu/${vmid}/agent/network-get-interfaces`,
+                {
+                  method: "GET",
+                },
+              ),
+            ),
+          },
+        ],
+      };
+    },
+  );
+
+  server.registerTool(
+    "qemuAgentGetOSInfo",
+    {
+      description: "Get the OS information of a VM",
+      inputSchema: {
+        node: z.string().describe("Node the VM is on"),
+        vmid: z.number().describe("ID of the VM"),
+      },
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+      },
+    },
+    async ({ node, vmid }) => {
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(
+              await pve(`nodes/${node}/qemu/${vmid}/agent/get-osinfo`, {
+                method: "GET",
+              }),
+            ),
+          },
+        ],
+      };
+    },
+  );
 }
