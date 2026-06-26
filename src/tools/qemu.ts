@@ -33,7 +33,7 @@ export async function registerTools(server: McpServer) {
       description: "Get the status of a VM",
       inputSchema: {
         node: z.string().describe("Node the VM is on"),
-        vmid: z.string().describe("ID of the VM"),
+        vmid: z.number().describe("ID of the VM"),
       },
       annotations: {
         readOnlyHint: true,
@@ -60,7 +60,7 @@ export async function registerTools(server: McpServer) {
       description: "Get the configuration of a VM",
       inputSchema: {
         node: z.string().describe("Node the VM is on"),
-        vmid: z.string().describe("ID of the VM"),
+        vmid: z.number().describe("ID of the VM"),
       },
       annotations: {
         readOnlyHint: true,
@@ -87,7 +87,7 @@ export async function registerTools(server: McpServer) {
       description: "Perform a power action on a VM",
       inputSchema: {
         node: z.string().describe("Node the VM is on"),
-        vmid: z.string().describe("ID of the VM"),
+        vmid: z.number().describe("ID of the VM"),
         action: z
           .enum([
             "start",
@@ -127,7 +127,7 @@ export async function registerTools(server: McpServer) {
       description: "Update the configuration of a VM",
       inputSchema: {
         node: z.string().describe("Node the VM is on"),
-        vmid: z.string().describe("ID of the VM"),
+        vmid: z.number().describe("ID of the VM"),
         // the qemu config object is HUGE so im omitting a lot that the LLM should know from training
         config: z
           .object({

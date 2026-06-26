@@ -33,7 +33,7 @@ export async function registerTools(server: McpServer) {
       description: "Get the status of a LXC container",
       inputSchema: {
         node: z.string().describe("Node the container is on"),
-        vmid: z.string().describe("ID of the container"),
+        vmid: z.number().describe("ID of the container"),
       },
       annotations: {
         readOnlyHint: true,
@@ -60,7 +60,7 @@ export async function registerTools(server: McpServer) {
       description: "Get the config of a LXC container",
       inputSchema: {
         node: z.string().describe("Node the container is on"),
-        vmid: z.string().describe("ID of the container"),
+        vmid: z.number().describe("ID of the container"),
       },
       annotations: {
         readOnlyHint: true,
@@ -85,7 +85,7 @@ export async function registerTools(server: McpServer) {
       description: "Perform a power action on a LXC container",
       inputSchema: {
         node: z.string().describe("Node the container is on"),
-        vmid: z.string().describe("ID of the container"),
+        vmid: z.number().describe("ID of the container"),
         action: z
           .enum(["start", "stop", "shutdown", "reboot", "suspend", "resume"])
           .describe("Power action"),
@@ -117,7 +117,7 @@ export async function registerTools(server: McpServer) {
       description: "Update the config of a LXC container",
       inputSchema: {
         node: z.string().describe("Node the container is on"),
-        vmid: z.string().describe("ID of the container"),
+        vmid: z.number().describe("ID of the container"),
         config: z
           .object({
             arch: z
